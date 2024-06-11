@@ -120,4 +120,4 @@ adjusted_severity = evaluate_vulnerability(cvss_score, num_endpoints, is_zero_da
 print(f"Adjusted Severity Score: {adjusted_severity:.1f}")
 ```
 
-This script provides a systematic approach to evaluating and normalizing the severity of vulnerabilities, ensuring a consistent assessment based on multiple factors.
+This script provides a systematic approach to evaluating and normalizing the severity of vulnerabilities, ensuring a consistent assessment based on multiple factors. It should not be used in place of industry standard CVSS ratings. Please use caution as this may not be uniform to everyone's situation.
