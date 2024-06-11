@@ -27,20 +27,7 @@ Evaluates the severity of a vulnerability based on the provided parameters.
 
 ```python
 def evaluate_vulnerability(cvss_score, num_endpoints, is_zero_day, endpoint_types, access_type):
-    """
-    Evaluate the severity of a vulnerability based on CVSS score, number of endpoints,
-    zero-day status, and types of endpoints.
 
-    Args:
-    cvss_score (float): CVSS base score of the vulnerability.
-    num_endpoints (int): Number of endpoints affected.
-    is_zero_day (bool): Indicates if the vulnerability is a zero-day.
-    endpoint_types (list): Types of endpoints affected (e.g., 'server', 'workstation').
-    access_type (bool): Indicates if the user(s) have privileged access.
-
-    Returns:
-    float: Adjusted severity score.
-    """
     cvss_severity = (cvss_score / 4) * 10
 
     # Adjust severity based on the number of endpoints affected
