@@ -1,110 +1,61 @@
 # vuln-assessment
 Recalculate vulnerabilities geared toward your org
 
-# Vulnerability Severity Evaluation
+# Vulnerability Severity Evaluation Tool
 
-This Python script evaluates the severity of a vulnerability based on the CVSS score, the number of endpoints affected, zero-day status, types of endpoints, and access type. The final severity score is normalized to a scale of 0-10.
+This Python script evaluates the severity of a cybersecurity vulnerability based on multiple factors including the CVSS score, the number of affected endpoints, whether the vulnerability is a zero-day, the types of affected endpoints, and whether the access is privileged.
 
-## Function: `evaluate_vulnerability`
+## Features
 
-### Description
+- **CVSS Score Evaluation**: Converts the CVSS score to a severity rating.
+- **Endpoint Analysis**: Assesses the impact based on the number of affected endpoints.
+- **Zero-Day Flag**: Evaluates the increased risk of zero-day vulnerabilities.
+- **Endpoint Type Consideration**: Differentiates between types of endpoints like servers and workstations.
+- **Access Type Evaluation**: Considers whether the access is privileged to adjust the severity score.
 
-Evaluates the severity of a vulnerability based on the provided parameters.
+## Usage
 
-### Parameters
+1. **Get CVSS Score**: Input the CVSS rating as 'critical', 'high', 'medium', or 'low'. The script will convert this into a numerical score.
+2. **Input Number of Endpoints**: Enter the total number of affected endpoints.
+3. **Zero-Day Status**: Specify if the vulnerability is a zero-day.
+4. **Specify Endpoint Types**: Enter the affected endpoint types separated by commas (e.g., 'server, workstation').
+5. **Privileged Access**: Indicate if the access is privileged.
 
+The script will then calculate and print the adjusted severity score based on the inputs.
+
+## Function Definitions
+
+### `evaluate_vulnerability(cvss_score, num_endpoints, is_zero_day, endpoint_types, access_type)`
+
+Evaluates the severity of a vulnerability.
+
+#### Arguments:
 - `cvss_score` (float): CVSS base score of the vulnerability.
 - `num_endpoints` (int): Number of endpoints affected.
 - `is_zero_day` (bool): Indicates if the vulnerability is a zero-day.
 - `endpoint_types` (list): Types of endpoints affected (e.g., 'server', 'workstation').
 - `access_type` (bool): Indicates if the user(s) have privileged access.
 
-### Returns
+#### Returns:
+- `float`: Adjusted severity score.
 
-- `float`: Adjusted severity score, normalized to a scale of 0-10.
+### `get_cvss_score()`
 
-### Implementation
+Prompts the user to enter a CVSS rating and returns the corresponding numerical score.
 
-```python
-def evaluate_vulnerability(cvss_score, num_endpoints, is_zero_day, endpoint_types, access_type):
+## Example Output
 
-    cvss_severity = (cvss_score / 4) * 10
+Adjusted Severity Score: 7.5
 
-    # Adjust severity based on the number of endpoints affected
-    if num_endpoints >= 200:
-        endpoint_severity = 10
-    elif num_endpoints > 100:
-        endpoint_severity = 6.67
-    else:
-        endpoint_severity = 3.33
 
-    zero_day_severity = 10 if is_zero_day else 0
+## Installation
 
-    endpoint_type_severity = 0
-    if 'server' in endpoint_types:
-        endpoint_type_severity += 10
-    if 'workstation' in endpoint_types:
-        endpoint_type_severity += 5
+No installation is required, just run the script in a Python environment capable of handling version 3.6 or newer.
 
-    access_severity = 10 if access_type else 0
+## Contributing
 
-    total_severity = (cvss_severity + endpoint_severity + zero_day_severity + endpoint_type_severity + access_severity) / 5
-    return min(total_severity, 10)
-```
+Contributions to this project are welcome. Please fork the repository and submit a pull request.
 
-## Function: `get_cvss_score`
+## License
 
-### Description
-
-Prompts the user to input a CVSS rating and returns the corresponding CVSS score.
-
-### Returns
-
-- `float`: CVSS score based on user input.
-
-### Implementation
-
-```python
-def get_cvss_score():
-    cvss_rating = input('Please enter the CVSS rating (critical, high, medium, low): ').strip().lower()
-    match cvss_rating:
-        case 'critical':
-            return 4.0
-        case 'high':
-            return 3.0
-        case 'medium':
-            return 2.0
-        case 'low':
-            return 1.0
-        case _:
-            print("Invalid CVSS rating. Please enter 'critical', 'high', 'medium', or 'low'.")
-            return get_cvss_score()  # Recursively ask for input again if invalid
-```
-
-## Usage
-
-1. Run the script.
-2. Provide the required inputs when prompted:
-   - CVSS rating (critical, high, medium, low)
-   - Number of endpoints
-   - Zero-day status (yes/no)
-   - Endpoint types (server, workstation)
-   - Access type (privileged access: yes/no)
-3. The script will output the adjusted severity score.
-
-### Example
-
-```python
-# Get inputs from the user
-cvss_score = get_cvss_score()
-num_endpoints = int(input('Please enter the number of endpoints: ').strip())
-is_zero_day = input('Is it a zero-day? (yes/no): ').strip().lower() in ['yes', 'y']
-endpoint_types = input('Please enter the endpoint types separated by commas (server, workstation): ').strip().lower().split(',')
-access_type = input('Do the user(s) have privileged access? (yes/no): ').strip().lower() in ['yes', 'y']
-
-# Evaluate the adjusted severity
-adjusted_severity = evaluate_vulnerability(cvss_score, num_endpoints, is_zero_day, endpoint_types, access_type)
-print(f"Adjusted Severity Score: {adjusted_severity:.1f}")
-```
-
-This script provides a systematic approach to evaluating and normalizing the severity of vulnerabilities, ensuring a consistent assessment based on multiple factors. It should not be used in place of industry standard CVSS ratings. Please use caution as this may not be uniform to everyone's situation.
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
